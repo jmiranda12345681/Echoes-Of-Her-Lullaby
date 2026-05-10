@@ -38,14 +38,6 @@ public class KitchenRoomController : MonoBehaviour
     public AudioClip introJumpscareSFX;
     public AudioClip scriptedWalkSFX;
 
-    [Header("Ingredient Objects (Optional for Reset)")]
-    public GameObject flourObject;
-    public GameObject sugarObject;
-    public GameObject vanillaObject;
-    public GameObject chocolateObject;
-    public GameObject eggObject;
-    public GameObject saltObject;
-
     private AudioSource walkSource;
 
     private void Awake()
@@ -406,13 +398,6 @@ public class KitchenRoomController : MonoBehaviour
         isPlayerHidden = false;
         introInProgress = false;
 
-        if (flourObject != null) flourObject.SetActive(true);
-        if (sugarObject != null) sugarObject.SetActive(true);
-        if (vanillaObject != null) vanillaObject.SetActive(true);
-        if (chocolateObject != null) chocolateObject.SetActive(true);
-        if (eggObject != null) eggObject.SetActive(true);
-        if (saltObject != null) saltObject.SetActive(true);
-
-        Debug.Log("DEBUG: Kitchen Puzzle Reset! (NOTE: Kung nasa SaveSystem pa rin ang items mo, baka kailangan mong i-clear din ang main save data mo).");
+        Debug.Log("DEBUG: Kitchen Puzzle Reset!");
     }
 }

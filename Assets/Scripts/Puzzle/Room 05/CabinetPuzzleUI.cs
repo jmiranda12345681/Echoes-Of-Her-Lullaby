@@ -1,84 +1,53 @@
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
 public class CabinetPuzzleUI : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public TMP_InputField codeInputField;
-    public TextMeshProUGUI feedbackText;
-    public GameObject unlockVisualEffect;
+    [Header("UI References")]
+    public Image[] digitDisplayImages; // I-drag dito yung 6 na Image objects ng digits
+    public Sprite[] numberSprites;     // I-drag dito ang 10 sprites (0 to 9)
 
-    [Header("Settings")]
-    public float unlockVisualDuration = 1.5f;
+    [Header("Padlock")]
+    public Image padlockImage;
+    public Sprite unlockedSprite;
 
-    private void Start()
+    private int[] currentDigits = new int[6];
+
+    // Tatawagin ito ng bawat Digit Button (Index 0-5)
+    public void OnDigitClicked(int index)
     {
-        if (feedbackText != null)
-        {
-            feedbackText.text = "";
-        }
+        // Increment index 0-9
+        currentDigits[index] = (currentDigits[index] + 1) % 10;
 
-        if (unlockVisualEffect != null)
-        {
-            unlockVisualEffect.SetActive(false);
-        }
+        // Palitan ang Sprite base sa bagong number
+        UpdateDigitSprite(index);
+
+        // Mag-play ng mechanical click SFX dito
     }
 
-    /// <summary>
-    /// Gets the code entered by the player
-    /// </summary>
+    void UpdateDigitSprite(int index)
+    {
+        int spriteIndex = currentDigits[index];
+        digitDisplayImages[index].sprite = numberSprites[spriteIndex];
+    }
+
     public string GetEnteredCode()
     {
-        if (codeInputField != null)
-        {
-            return codeInputField.text;
-        }
-        return "";
+        // Pinagsasama ang 6 numbers para maging isang string (e.g., "332412")
+        return string.Join("", currentDigits);
     }
 
-    /// <summary>
-    /// Shows visual feedback when the cabinet is unlocked
-    /// </summary>
+    public void ResetPuzzle()
+    {
+        for (int i = 0; i < currentDigits.Length; i++)
+        {
+            currentDigits[i] = 0;
+            UpdateDigitSprite(i);
+        }
+    }
+
     public void ShowUnlockVisual()
     {
-        if (feedbackText != null)
-        {
-            feedbackText.text = "UNLOCKED!";
-            feedbackText.color = Color.green;
-        }
-
-        if (unlockVisualEffect != null)
-        {
-            unlockVisualEffect.SetActive(true);
-        }
-    }
-
-    /// <summary>
-    /// Clears the input field
-    /// </summary>
-    public void ClearInput()
-    {
-        if (codeInputField != null)
-        {
-            codeInputField.text = "";
-        }
-
-        if (feedbackText != null)
-        {
-            feedbackText.text = "";
-        }
-    }
-
-    /// <summary>
-    /// Shows error feedback
-    /// </summary>
-    public void ShowError(string message = "Wrong Code")
-    {
-        if (feedbackText != null)
-        {
-            feedbackText.text = message;
-            feedbackText.color = Color.red;
-        }
+        if (unlockedSprite != null) padlockImage.sprite = unlockedSprite;
     }
 }
